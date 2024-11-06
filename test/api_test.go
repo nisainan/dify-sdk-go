@@ -10,7 +10,7 @@ import (
 
 	"sync"
 
-	"github.com/KevinZhao/dify-sdk-go"
+	"github.com/langgenius/dify-sdk-go"
 )
 
 var (
@@ -162,7 +162,7 @@ func TestParameters(t *testing.T) {
 
 func TestRunWorkflow(t *testing.T) {
 	client := dify.NewClient(host, apiSecretKey)
-	//client := dify.NewClient("https://dify.zhaokm.org", "app-")
+	// client := dify.NewClient("https://dify.zhaokm.org", "app-")
 
 	// 测试带图片的工作流请求
 	workflowReq := dify.WorkflowRequest{
