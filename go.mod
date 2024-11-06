@@ -1,3 +1,3 @@
-module github.com/langgenius/dify-sdk-go
+module github.com/blankbro/dify-sdk-go
 
 go 1.16
