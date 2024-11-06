@@ -3,7 +3,7 @@ This is the Go SDK for the Dify API, which allows you to easily integrate Dify i
 
 ## Install
 ```bash
-go get github.com/langgenius/dify-sdk-go@blankbro
+go get github.com/langgenius/dify-sdk-go
 ```
 
 ## Usage
