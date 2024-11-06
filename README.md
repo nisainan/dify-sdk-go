@@ -3,7 +3,7 @@ This is the Go SDK for the Dify API, which allows you to easily integrate Dify i
 
 ## Install
 ```bash
-go get github.com/blankbro/dify-sdk-go@blankbro
+go get github.com/langgenius/dify-sdk-go@blankbro
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ import (
 	"log"
 	"strings"
 
-	"github.com/blankbro/dify-sdk-go"
+	"github.com/langgenius/dify-sdk-go"
 )
 
 func main() {
