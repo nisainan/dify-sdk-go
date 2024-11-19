@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"strings"
 )
 
 type ChatMessageStreamResponse struct {
@@ -104,6 +105,9 @@ func (api *API) chatMessagesStreamHandle(ctx context.Context, resp *http.Respons
 
 			var resp ChatMessageStreamChannelResponse
 			if err = json.Unmarshal(line, &resp); err != nil {
+				if str := strings.TrimSpace(string(line)); str == "ping" {
+					continue
+				}
 				streamChannel <- ChatMessageStreamChannelResponse{
 					Err: fmt.Errorf("error unmarshalling event: %w", err),
 				}
