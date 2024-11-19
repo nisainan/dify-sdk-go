@@ -56,7 +56,7 @@ func (c *Client) sendJSONRequest(req *http.Request, res interface{}) error {
 		var errBody struct {
 			Code    string `json:"code"`
 			Message string `json:"message"`
-			Status  int    `json:"status"`
+			Status  string `json:"status"`
 		}
 		err = json.NewDecoder(resp.Body).Decode(&errBody)
 		if err != nil {
