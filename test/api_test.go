@@ -3,7 +3,6 @@ package test
 import (
 	"context"
 	"encoding/json"
-	"github.com/langgenius/dify-sdk-go"
 	"log"
 	"strings"
 	"testing"
