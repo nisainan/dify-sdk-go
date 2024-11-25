@@ -26,7 +26,7 @@ type ChatMessageResponse struct {
 func (api *API) ChatMessages(ctx context.Context, req *ChatMessageRequest) (resp *ChatMessageResponse, err error) {
 	req.ResponseMode = "blocking"
 
-	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, "/v1/chat-messages", req)
+	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, "/v1/chat-messages", req, Chat)
 	if err != nil {
 		return
 	}

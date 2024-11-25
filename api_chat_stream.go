@@ -62,7 +62,7 @@ type ChatMessageStreamChannelResponse struct {
 func (api *API) ChatMessagesStreamRaw(ctx context.Context, req *ChatMessageRequest) (*http.Response, error) {
 	req.ResponseMode = "streaming"
 
-	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, "/v1/chat-messages", req)
+	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, "/v1/chat-messages", req, Chat)
 	if err != nil {
 		return nil, err
 	}

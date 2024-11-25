@@ -50,7 +50,7 @@ func (api *API) Conversations(ctx context.Context, req *ConversationsRequest) (r
 		req.Limit = 20
 	}
 
-	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, "/v1/conversations", nil)
+	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, "/v1/conversations", nil, Chat)
 	if err != nil {
 		return
 	}
@@ -72,7 +72,7 @@ func (api *API) ConversationsRenaming(ctx context.Context, req *ConversationsRen
 	url := fmt.Sprintf("/v1/conversations/%s/name", req.ConversationID)
 	req.ConversationID = ""
 
-	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, url, req)
+	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, url, req, Chat)
 	if err != nil {
 		return
 	}

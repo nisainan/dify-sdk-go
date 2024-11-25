@@ -7,8 +7,8 @@ import (
 
 type ClientConfig struct {
 	Host             string
-	ApiSecretKey     string // deprecated: use DefaultAPISecret instead
-	DefaultAPISecret string
+	ChatAPISecret    string
+	DatasetAPISecret string
 	Timeout          time.Duration
 	Transport        *http.Transport
 }

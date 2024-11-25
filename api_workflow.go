@@ -114,7 +114,7 @@ func (h *DefaultEventHandler) HandleTTSMessage(msg TTSMessage) {
 
 // RunWorkflow 方法
 func (api *API) RunWorkflow(ctx context.Context, request WorkflowRequest) (*WorkflowResponse, error) {
-	req, err := api.createBaseRequest(ctx, http.MethodPost, "/v1/workflows/run", request)
+	req, err := api.createBaseRequest(ctx, http.MethodPost, "/v1/workflows/run", request, Chat)
 	if err != nil {
 		return nil, fmt.Errorf("failed to create base request: %w", err)
 	}
@@ -144,7 +144,7 @@ func (api *API) RunStreamWorkflow(ctx context.Context, request WorkflowRequest, 
 
 // RunStreamWorkflowWithHandler 方法
 func (api *API) RunStreamWorkflowWithHandler(ctx context.Context, request WorkflowRequest, handler EventHandler) error {
-	req, err := api.createBaseRequest(ctx, http.MethodPost, "/v1/workflows/run", request)
+	req, err := api.createBaseRequest(ctx, http.MethodPost, "/v1/workflows/run", request, Chat)
 	if err != nil {
 		return err
 	}

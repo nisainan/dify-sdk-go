@@ -44,7 +44,7 @@ func (api *API) Parameters(ctx context.Context, req *ParametersRequest) (resp *P
 		return
 	}
 
-	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, "/v1/parameters", nil)
+	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, "/v1/parameters", nil, Chat)
 	if err != nil {
 		return
 	}

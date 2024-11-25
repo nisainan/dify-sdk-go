@@ -62,7 +62,7 @@ type MessagesDataResponse struct {
  * The first page returns the latest limit bar, which is in reverse order.
  */
 func (api *API) Messages(ctx context.Context, req *MessagesRequest) (resp *MessagesResponse, err error) {
-	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, "/v1/messages", nil)
+	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, "/v1/messages", nil, Chat)
 	if err != nil {
 		return
 	}
@@ -94,7 +94,7 @@ func (api *API) MessagesFeedbacks(ctx context.Context, req *MessagesFeedbacksReq
 	url := fmt.Sprintf("/v1/messages/%s/feedbacks", req.MessageID)
 	req.MessageID = ""
 
-	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, url, req)
+	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, url, req, Chat)
 	if err != nil {
 		return
 	}

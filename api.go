@@ -8,24 +8,42 @@ import (
 	"net/http"
 )
 
+const (
+	Chat    = "Chat"
+	Dataset = "Dataset"
+)
+
 type API struct {
-	c      *Client
-	secret string
+	c          *Client
+	chatSecret string
+	dataSecret string
 }
 
-func (api *API) WithSecret(secret string) *API {
-	api.secret = secret
+func (api *API) WithChatSecret(secret string) *API {
+	api.chatSecret = secret
 	return api
 }
 
-func (api *API) getSecret() string {
-	if api.secret != "" {
-		return api.secret
+func (api *API) getChatSecret() string {
+	if api.chatSecret != "" {
+		return api.chatSecret
 	}
-	return api.c.getAPISecret()
+	return api.c.getChatAPISecret()
 }
 
-func (api *API) createBaseRequest(ctx context.Context, method, apiUrl string, body interface{}) (*http.Request, error) {
+func (api *API) WithDatasetSecret(secret string) *API {
+	api.dataSecret = secret
+	return api
+}
+
+func (api *API) getDatasetSecret() string {
+	if api.dataSecret != "" {
+		return api.dataSecret
+	}
+	return api.c.getDatasetAPISecret()
+}
+
+func (api *API) createBaseRequest(ctx context.Context, method, apiUrl string, body interface{}, apiType string) (*http.Request, error) {
 	var b io.Reader
 	if body != nil {
 		reqBytes, err := json.Marshal(body)
@@ -40,7 +58,16 @@ func (api *API) createBaseRequest(ctx context.Context, method, apiUrl string, bo
 	if err != nil {
 		return nil, err
 	}
-	req.Header.Set("Authorization", "Bearer "+api.getSecret())
+	var token string
+	switch apiType {
+	case Chat:
+		token = api.getChatSecret()
+	case Dataset:
+		token = api.getDatasetSecret()
+	default:
+		token = api.getChatSecret()
+	}
+	req.Header.Set("Authorization", "Bearer "+token)
 	req.Header.Set("Cache-Control", "no-cache")
 	req.Header.Set("Content-Type", "application/json; charset=utf-8")
 	return req, nil

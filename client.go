@@ -9,7 +9,8 @@ import (
 
 type Client struct {
 	host             string
-	defaultAPISecret string
+	chatAPISecret    string
+	datasetAPISecret string
 	httpClient       *http.Client
 }
 
@@ -22,22 +23,19 @@ func NewClientWithConfig(c *ClientConfig) *Client {
 	if c.Transport != nil {
 		httpClient.Transport = c.Transport
 	}
-
-	secret := c.DefaultAPISecret
-	if secret == "" {
-		secret = c.ApiSecretKey
-	}
 	return &Client{
 		host:             c.Host,
-		defaultAPISecret: secret,
+		chatAPISecret:    c.ChatAPISecret,
+		datasetAPISecret: c.DatasetAPISecret,
 		httpClient:       httpClient,
 	}
 }
 
-func NewClient(host, defaultAPISecret string) *Client {
+func NewClient(host, chatAPISecret, datasetAPISecret string) *Client {
 	return NewClientWithConfig(&ClientConfig{
 		Host:             host,
-		DefaultAPISecret: defaultAPISecret,
+		ChatAPISecret:    chatAPISecret,
+		DatasetAPISecret: datasetAPISecret,
 	})
 }
 
@@ -77,8 +75,12 @@ func (c *Client) getHost() string {
 	return host
 }
 
-func (c *Client) getAPISecret() string {
-	return c.defaultAPISecret
+func (c *Client) getChatAPISecret() string {
+	return c.chatAPISecret
+}
+
+func (c *Client) getDatasetAPISecret() string {
+	return c.datasetAPISecret
 }
 
 // Api deprecated, use API() instead
