@@ -174,3 +174,23 @@ func (api *API) DocumentsIndexingStatus(ctx context.Context, req *DocumentsIndex
 	err = api.c.sendJSONRequest(httpReq, &resp)
 	return
 }
+
+// ------------------------------
+
+type DocumentDeleteRequest struct {
+	DatasetID  string `json:"dataset_id"`
+	DocumentID string `json:"document_id"`
+}
+
+type DocumentDeleteResponse struct {
+	Result string `json:"result"`
+}
+
+func (api *API) DocumentDelete(ctx context.Context, req *DocumentDeleteRequest) (resp *DocumentDeleteResponse, err error) {
+	httpReq, err := api.createBaseRequest(ctx, http.MethodDelete, fmt.Sprintf("/v1/datasets/%s/documents/%s", req.DatasetID, req.DocumentID), nil, Dataset)
+	if err != nil {
+		return
+	}
+	err = api.c.sendJSONRequest(httpReq, &resp)
+	return
+}
