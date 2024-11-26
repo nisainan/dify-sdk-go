@@ -139,3 +139,38 @@ func (api *API) DatasetDocumentCreatByFile(ctx context.Context, req *DatasetDocu
 	err = api.c.sendJSONRequest(httpReq, &resp)
 	return
 }
+
+// ------------------------------
+
+type DocumentsIndexingStatusRequest struct {
+	DatasetID string `json:"dataset_id"`
+	Batch     string `json:"batch"`
+}
+
+type DocumentsIndexingStatusDataResponse struct {
+	ID                   string  `json:"id"`
+	IndexingStatus       string  `json:"indexing_status"`
+	ProcessingStartedAt  float64 `json:"processing_started_at"`
+	ParsingCompletedAt   float64 `json:"parsing_completed_at"`
+	CleaningCompletedAt  float64 `json:"cleaning_completed_at"`
+	SplittingCompletedAt float64 `json:"splitting_completed_at"`
+	CompletedAt          any     `json:"completed_at"`
+	PausedAt             any     `json:"paused_at"`
+	Error                any     `json:"error"`
+	StoppedAt            any     `json:"stopped_at"`
+	CompletedSegments    int     `json:"completed_segments"`
+	TotalSegments        int     `json:"total_segments"`
+}
+
+type DocumentsIndexingStatusResponse struct {
+	Data []DocumentsIndexingStatusDataResponse `json:"data"`
+}
+
+func (api *API) DocumentsIndexingStatus(ctx context.Context, req *DocumentsIndexingStatusRequest) (resp *DocumentsIndexingStatusResponse, err error) {
+	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, fmt.Sprintf("/v1/datasets/%s/documents/%s/indexing-status", req.DatasetID, req.Batch), nil, Dataset)
+	if err != nil {
+		return
+	}
+	err = api.c.sendJSONRequest(httpReq, &resp)
+	return
+}
