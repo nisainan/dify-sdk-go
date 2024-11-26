@@ -131,7 +131,7 @@ func (api *API) DatasetDocumentCreatByFile(ctx context.Context, req *DatasetDocu
 	if err != nil {
 		return nil, fmt.Errorf("error closing writer: %v", err)
 	}
-	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, fmt.Sprintf("/v1/datasets/%s/document/create_by_file", req.DatasetID), body, Dataset)
+	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, fmt.Sprintf("/v1/datasets/%s/document/create_by_file", req.DatasetID), body, Dataset)
 	if err != nil {
 		return
 	}
