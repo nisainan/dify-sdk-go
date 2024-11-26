@@ -46,11 +46,16 @@ func (api *API) getDatasetSecret() string {
 func (api *API) createBaseRequest(ctx context.Context, method, apiUrl string, body interface{}, apiType string) (*http.Request, error) {
 	var b io.Reader
 	if body != nil {
-		reqBytes, err := json.Marshal(body)
-		if err != nil {
-			return nil, err
+		// 断言body是否是io.Reader类型
+		if reader, ok := body.(io.Reader); ok {
+			b = reader
+		} else {
+			reqBytes, err := json.Marshal(body)
+			if err != nil {
+				return nil, err
+			}
+			b = bytes.NewBuffer(reqBytes)
 		}
-		b = bytes.NewBuffer(reqBytes)
 	} else {
 		b = http.NoBody
 	}
