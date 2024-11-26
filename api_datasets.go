@@ -69,7 +69,7 @@ func (api *API) DatasetDocuments(ctx context.Context, req *DatasetDocumentsReque
 type DatasetDocumentCreatByFileRequest struct {
 	DatasetID string         `json:"dataset_id"`
 	File      multipart.File `json:"file"`
-	FileName  string         `yaml:"file_name"`
+	FileName  string         `json:"file_name"`
 	Data      struct {
 		OriginalDocumentID string `json:"original_document_id"`
 		IndexingTechnique  string `json:"indexing_technique"`
