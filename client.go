@@ -3,6 +3,7 @@ package dify
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -49,20 +50,10 @@ func (c *Client) sendJSONRequest(req *http.Request, res interface{}) error {
 		return err
 	}
 	defer resp.Body.Close()
-
 	if resp.StatusCode != http.StatusOK {
-		var errBody struct {
-			Code    string `json:"code"`
-			Message string `json:"message"`
-			Status  int    `json:"status"`
-		}
-		err = json.NewDecoder(resp.Body).Decode(&errBody)
-		if err != nil {
-			return err
-		}
-		return fmt.Errorf("HTTP response error: [%v]%v", errBody.Code, errBody.Message)
+		bodyBytes, _ := io.ReadAll(resp.Body)
+		return fmt.Errorf("HTTP response error: %s", string(bodyBytes))
 	}
-
 	err = json.NewDecoder(resp.Body).Decode(res)
 	if err != nil {
 		return err
