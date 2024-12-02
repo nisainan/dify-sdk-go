@@ -194,3 +194,48 @@ func (api *API) DocumentDelete(ctx context.Context, req *DocumentDeleteRequest) 
 	err = api.c.sendJSONRequest(httpReq, &resp)
 	return
 }
+
+// ------------------------------
+
+type DatasetDocumentSegmentsRequest struct {
+	DatasetID  string `json:"dataset_id"`
+	DocumentID string `json:"document_id"`
+}
+
+type DatasetDocumentSegmentsDataResponse struct {
+	Id            string   `json:"id"`
+	Position      int      `json:"position"`
+	DocumentId    string   `json:"document_id"`
+	Content       string   `json:"content"`
+	Answer        string   `json:"answer"`
+	WordCount     int      `json:"word_count"`
+	Tokens        int      `json:"tokens"`
+	Keywords      []string `json:"keywords"`
+	IndexNodeId   string   `json:"index_node_id"`
+	IndexNodeHash string   `json:"index_node_hash"`
+	HitCount      int      `json:"hit_count"`
+	Enabled       bool     `json:"enabled"`
+	DisabledAt    any      `json:"disabled_at"`
+	DisabledBy    any      `json:"disabled_by"`
+	Status        string   `json:"status"`
+	CreatedBy     string   `json:"created_by"`
+	CreatedAt     int      `json:"created_at"`
+	IndexingAt    int      `json:"indexing_at"`
+	CompletedAt   int      `json:"completed_at"`
+	Error         any      `json:"error"`
+	StoppedAt     any      `json:"stopped_at"`
+}
+
+type DatasetDocumentSegmentsResponse struct {
+	Data    []DatasetDocumentSegmentsDataResponse `json:"data"`
+	DocForm string                                `json:"doc_form"`
+}
+
+func (api *API) DatasetsDocumentsSegments(ctx context.Context, req *DatasetDocumentSegmentsRequest) (resp *DatasetDocumentSegmentsResponse, err error) {
+	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, fmt.Sprintf("/v1/datasets/%s/documents/%s/segments", req.DatasetID, req.DocumentID), nil, Dataset)
+	if err != nil {
+		return
+	}
+	err = api.c.sendJSONRequest(httpReq, &resp)
+	return
+}
