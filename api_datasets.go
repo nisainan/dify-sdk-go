@@ -239,8 +239,12 @@ func (api *API) DatasetsDocumentsSegments(ctx context.Context, req *DatasetDocum
 		return
 	}
 	query := httpReq.URL.Query()
-	query.Set("keyword", req.Keyword)
-	query.Set("status", req.Status)
+	if len(req.Keyword) > 0 {
+		query.Set("keyword", req.Keyword)
+	}
+	if len(req.Status) > 0 {
+		query.Set("status", req.Status)
+	}
 	httpReq.URL.RawQuery = query.Encode()
 	err = api.c.sendJSONRequest(httpReq, &resp)
 	return
