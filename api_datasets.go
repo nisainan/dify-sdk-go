@@ -200,6 +200,8 @@ func (api *API) DocumentDelete(ctx context.Context, req *DocumentDeleteRequest) 
 type DatasetDocumentSegmentsRequest struct {
 	DatasetID  string `json:"dataset_id"`
 	DocumentID string `json:"document_id"`
+	Keyword    string `json:"keyword,omitempty"`
+	Status     string `json:"status,omitempty"`
 }
 
 type DatasetDocumentSegmentsDataResponse struct {
@@ -236,6 +238,10 @@ func (api *API) DatasetsDocumentsSegments(ctx context.Context, req *DatasetDocum
 	if err != nil {
 		return
 	}
+	query := httpReq.URL.Query()
+	query.Set("keyword", req.Keyword)
+	query.Set("status", req.Status)
+	httpReq.URL.RawQuery = query.Encode()
 	err = api.c.sendJSONRequest(httpReq, &resp)
 	return
 }
