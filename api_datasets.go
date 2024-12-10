@@ -20,6 +20,7 @@ type DatasetDocumentsRequest struct {
 
 type DatasetDocumentsDataResponse struct {
 	ID                   string `json:"id"`
+	URL                  string `json:"url"`
 	Position             int    `json:"position"`
 	DataSourceType       string `json:"data_source_type"`
 	DataSourceInfo       any    `json:"data_source_info"`
