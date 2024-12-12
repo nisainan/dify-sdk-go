@@ -76,7 +76,7 @@ type DatasetDocumentCreatByFileRequest struct {
 		IndexingTechnique  string `json:"indexing_technique"`
 		ProcessRule        struct {
 			Mode  string `json:"mode"`
-			Rules []any  `json:"rules"`
+			Rules any    `json:"rules"`
 		} `json:"process_rule"`
 	} `json:"data"`
 }
