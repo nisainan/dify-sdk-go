@@ -72,11 +72,11 @@ type DatasetDocumentCreatByFileRequest struct {
 	File      multipart.File `json:"file"`
 	FileName  string         `json:"file_name"`
 	Data      struct {
-		OriginalDocumentID string `json:"original_document_id"`
-		IndexingTechnique  string `json:"indexing_technique"`
+		OriginalDocumentID string `json:"original_document_id,omitempty"`
+		IndexingTechnique  string `json:"indexing_technique,omitempty"`
 		ProcessRule        struct {
 			Mode  string `json:"mode"`
-			Rules any    `json:"rules"`
+			Rules any    `json:"rules,omitempty"`
 		} `json:"process_rule"`
 	} `json:"data"`
 }
