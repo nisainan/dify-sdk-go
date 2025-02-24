@@ -47,9 +47,9 @@ type ChatMessageStreamResponse struct {
 		TotalTokens       int         `json:"total_tokens"`
 		TotalSteps        int         `json:"total_steps"`
 		ExecutionMetadata struct {
-			TotalTokens int     `json:"total_tokens"`
-			TotalPrice  float64 `json:"total_price,omitempty"`
-			Currency    string  `json:"currency,omitempty"`
+			TotalTokens int    `json:"total_tokens"`
+			TotalPrice  string `json:"total_price,omitempty"`
+			Currency    string `json:"currency,omitempty"`
 		} `json:"execution_metadata"`
 	} `json:"data"`
 }
