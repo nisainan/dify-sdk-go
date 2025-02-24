@@ -38,7 +38,7 @@ type ChatMessageStreamResponse struct {
 		Title             string      `json:"title"`
 		Index             int         `json:"index"`
 		PredecessorNodeId string      `json:"predecessor_node_id"`
-		ProcessData       string      `json:"process_data"`
+		ProcessData       any         `json:"process_data"`
 		Status            string      `json:"status"`
 		Error             string      `json:"error"`
 		ElapsedTime       float32     `json:"elapsed_time"`
