@@ -11,6 +11,55 @@ import (
 	"strconv"
 )
 
+type DatasetsRequest struct {
+	Page  int `json:"page,omitempty"`
+	Limit int `json:"limit,omitempty"`
+}
+
+type DatasetsDataResponse struct {
+	ID                string `json:"id"`
+	Name              string `json:"name"`
+	Description       string `json:"description"`
+	Permission        string `json:"permission"`
+	DataSourceType    string `json:"data_source_type"`
+	IndexingTechnique string `json:"indexing_technique"`
+	AppCount          int    `json:"app_count"`
+	DocumentCount     int    `json:"document_count"`
+	WordCount         int    `json:"word_count"`
+	CreatedBy         string `json:"created_by"`
+	CreatedAt         int    `json:"created_at"`
+	UpdatedBy         string `json:"updated_by"`
+	UpdatedAt         int    `json:"updated_at"`
+}
+
+type DatasetsResponse struct {
+	Limit   int                    `json:"limit"`
+	HasMore bool                   `json:"has_more"`
+	Total   int                    `json:"total"`
+	Page    int                    `json:"page"`
+	Data    []DatasetsDataResponse `json:"data"`
+}
+
+// ------------------------------
+
+func (api *API) Datasets(ctx context.Context, req *DatasetsRequest) (resp *DatasetsResponse, err error) {
+	httpReq, err := api.createBaseRequest(ctx, http.MethodGet, "/v1/datasets", nil, Dataset)
+	if err != nil {
+		return
+	}
+	query := httpReq.URL.Query()
+	if req.Page > 0 {
+		query.Set("page", strconv.FormatInt(int64(req.Page), 10))
+	}
+	if req.Limit > 0 {
+		query.Set("limit", strconv.FormatInt(int64(req.Limit), 10))
+	}
+	httpReq.URL.RawQuery = query.Encode()
+
+	err = api.c.sendJSONRequest(httpReq, &resp)
+	return
+}
+
 type DatasetDocumentsRequest struct {
 	DatasetID string `json:"dataset_id"`
 	Keyword   string `json:"keyword,omitempty"`
@@ -67,17 +116,85 @@ func (api *API) DatasetDocuments(ctx context.Context, req *DatasetDocumentsReque
 
 // ------------------------------
 
+type ProcessRule struct {
+	Rules any    `json:"rules,omitempty"`
+	Mode  string `json:"mode"`
+}
+
+type DatasetDocumentCreatByTextRequest struct {
+	DatasetID         string      `json:"dataset_id"`
+	Name              string      `json:"name"`
+	Text              string      `json:"text"`
+	IndexingTechnique string      `json:"indexing_technique,omitempty"`
+	ProcessRule       ProcessRule `json:"process_rule"`
+}
+
+type DatasetDocumentCreatByTextResponse struct {
+	Document struct {
+		ID             string `json:"id"`
+		Position       int    `json:"position"`
+		DataSourceType string `json:"data_source_type"`
+		DataSourceInfo struct {
+			UploadFileId string `json:"upload_file_id"`
+		} `json:"data_source_info"`
+		DatasetProcessRuleId string `json:"dataset_process_rule_id"`
+		Name                 string `json:"name"`
+		CreatedFrom          string `json:"created_from"`
+		CreatedBy            string `json:"created_by"`
+		CreatedAt            int    `json:"created_at"`
+		Tokens               int    `json:"tokens"`
+		IndexingStatus       string `json:"indexing_status"`
+		Error                any    `json:"error"`
+		Enabled              bool   `json:"enabled"`
+		DisabledAt           any    `json:"disabled_at"`
+		DisabledBy           any    `json:"disabled_by"`
+		Archived             bool   `json:"archived"`
+		DisplayStatus        string `json:"display_status"`
+		WordCount            int    `json:"word_count"`
+		HitCount             int    `json:"hit_count"`
+		DocForm              string `json:"doc_form"`
+	} `json:"document"`
+	Batch string `json:"batch"`
+}
+
+func (api *API) DatasetDocumentCreatByText(ctx context.Context, req *DatasetDocumentCreatByTextRequest) (resp *DatasetDocumentCreatByTextResponse, err error) {
+	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, fmt.Sprintf("/v1/datasets/%s/document/create_by_text", req.DatasetID), req, Dataset)
+	if err != nil {
+		return
+	}
+	err = api.c.sendJSONRequest(httpReq, &resp)
+	return
+}
+
+// ------------------------------
+
+type DatasetDocumentUpdateByTextRequest struct {
+	DatasetDocumentCreatByTextRequest
+}
+
+type DatasetDocumentUpdateByTextResponse struct {
+	DatasetDocumentCreatByTextResponse
+}
+
+func (api *API) DatasetDocumentUpdateByText(ctx context.Context, req *DatasetDocumentUpdateByTextRequest) (resp *DatasetDocumentUpdateByTextResponse, err error) {
+	httpReq, err := api.createBaseRequest(ctx, http.MethodPost, fmt.Sprintf("/v1/datasets/%s/document/update_by_text", req.DatasetID), req, Dataset)
+	if err != nil {
+		return
+	}
+	err = api.c.sendJSONRequest(httpReq, &resp)
+	return
+}
+
+// ------------------------------
+
 type DatasetDocumentCreatByFileRequest struct {
 	DatasetID string         `json:"dataset_id"`
 	File      multipart.File `json:"file"`
 	FileName  string         `json:"file_name"`
 	Data      struct {
-		OriginalDocumentID string `json:"original_document_id,omitempty"`
-		IndexingTechnique  string `json:"indexing_technique,omitempty"`
-		ProcessRule        struct {
-			Mode  string `json:"mode"`
-			Rules any    `json:"rules,omitempty"`
-		} `json:"process_rule"`
+		OriginalDocumentID string      `json:"original_document_id,omitempty"`
+		IndexingTechnique  string      `json:"indexing_technique,omitempty"`
+		ProcessRule        ProcessRule `json:"process_rule"`
 	} `json:"data"`
 }
 
